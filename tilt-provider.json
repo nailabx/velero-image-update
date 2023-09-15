@@ -1,0 +1,10 @@
+{
+  "plugin_name": "velero-image-update",
+  "context": ".",
+  "image": "velero/image-update",
+  "live_reload_deps": [
+    "internal",
+    "main.go"
+  ],
+  "go_main": "."
+}
