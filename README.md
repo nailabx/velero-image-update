@@ -1,4 +1,4 @@
-# Velero Example Plugins
+# Velero Image Update
 
 ![Build Status][1]
 
