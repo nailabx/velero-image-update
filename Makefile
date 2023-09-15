@@ -13,10 +13,10 @@
 # limitations under the License.
 
 PKG := github.com/nailabx/velero-image-update
-BIN := velero-plugin-example
+BIN := velero-image-update
 
 REGISTRY ?= velero
-IMAGE    ?= $(REGISTRY)/velero-plugin-example
+IMAGE    ?= $(REGISTRY)/velero-image-update
 VERSION  ?= main 
 
 GOOS   ?= $(shell go env GOOS)

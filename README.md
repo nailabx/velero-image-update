@@ -32,7 +32,7 @@ To build the image, run
 $ make container
 ```
 
-This builds an image tagged as `velero/velero-plugin-example:main`. If you want to specify a different name or version/tag, run:
+This builds an image tagged as `velero/velero-image-update:main`. If you want to specify a different name or version/tag, run:
 
 ```bash
 $ IMAGE=your-repo/your-name VERSION=your-version-tag make container 
@@ -43,7 +43,7 @@ $ IMAGE=your-repo/your-name VERSION=your-version-tag make container
 To deploy your plugin image to an Velero server:
 
 1. Make sure your image is pushed to a registry that is accessible to your cluster's nodes.
-2. Run `velero plugin add <registry/image:version>`. Example with a dockerhub image: `velero plugin add velero/velero-plugin-example`.
+2. Run `velero plugin add <registry/image:version>`. Example with a dockerhub image: `velero plugin add velero/velero-image-update`.
 
 ## Using the plugins
 
