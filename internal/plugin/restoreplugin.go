@@ -44,7 +44,7 @@ func (p *RestorePlugin) AppliesTo() (velero.ResourceSelector, error) {
 // Execute allows the RestorePlugin to perform arbitrary logic with the item being restored,
 // in this case, setting a custom annotation on the item being restored.
 func (p *RestorePlugin) Execute(input *velero.RestoreItemActionExecuteInput) (*velero.RestoreItemActionExecuteOutput, error) {
-	p.log.Info("Hello from my RestorePlugin!")
+	p.log.Info("Hello from my velero-image-update!")
 
 	metadata, err := meta.Accessor(input.Item)
 	if err != nil {
@@ -56,9 +56,11 @@ func (p *RestorePlugin) Execute(input *velero.RestoreItemActionExecuteInput) (*v
 		annotations = make(map[string]string)
 	}
 
-	annotations["velero.io/my-restore-plugin"] = "1"
+	annotations["velero.io/velero-image-update"] = "1"
 
 	metadata.SetAnnotations(annotations)
+	// Get the Docker image tag from the item's spec.
+	p.log.Info("The current item is ", input.Item)
 
 	return velero.NewRestoreItemActionExecuteOutput(input.Item), nil
 }

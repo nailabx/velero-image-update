@@ -58,12 +58,12 @@ dnsPolicy: ClusterFirst
 # Init containers to add to the Velero deployment's pod spec. At least one plugin provider image is required.
 # If the value is a string then it is evaluated as a template.
 initContainers:
-  # - name: velero-plugin-for-csi
-  #   image: velero/velero-plugin-for-csi:v0.5.0
-  #   imagePullPolicy: IfNotPresent
-  #   volumeMounts:
-  #     - mountPath: /target
-  #       name: plugins
+   - name: velero-plugin-for-csi
+     image: velero/velero-plugin-for-csi:v0.5.0
+     imagePullPolicy: IfNotPresent
+     volumeMounts:
+       - mountPath: /target
+         name: plugins
   # - name: velero-plugin-for-aws
   #   image: velero/velero-plugin-for-aws:v1.7.0
   #   imagePullPolicy: IfNotPresent
@@ -277,9 +277,9 @@ configuration:
     # a backup storage location will be created with the name "default". Optional.
   - name:
     # provider is the name for the backup storage location provider.
-    provider:
+    provider: aws
     # bucket is the name of the bucket to store backups in. Required.
-    bucket:
+    bucket: zina-bucket-1
     # caCert defines a base64 encoded CA bundle to use when verifying TLS connections to the provider. Optional.
     caCert:
     # prefix is the directory under which all Velero data should be stored within the bucket. Optional.
@@ -319,9 +319,9 @@ configuration:
   # See https://velero.io/docs/v1.6/api-types/volumesnapshotlocation/
   volumeSnapshotLocation:
     # name is the name of the volume snapshot location where snapshots are being taken. Required.
-  - name:
+  - name: velero-backup
     # provider is the name for the volume snapshot provider.
-    provider:
+    provider: csi
     credential:
       # name of the secret used by this volumeSnapshotLocation.
       name:
@@ -388,7 +388,7 @@ configuration:
   # features: EnableCSI
   features:
   # `velero server` default: velero
-  namespace:
+  namespace: velero
 
   # additional key/value pairs to be used as environment variables such as "AWS_CLUSTER_NAME: 'yourcluster.domain.tld'"
   extraEnvVars: {}
@@ -433,7 +433,7 @@ credentials:
   # - using workload identity instead of providing the key file. (GCP only)
   useSecret: true
   # Name of the secret to create if `useSecret` is true and `existingSecret` is empty
-  name:
+  name: velero-aws-s3
   # Name of a pre-existing secret (if any) in the Velero namespace
   # that should be used to get IAM account credentials. Optional.
   existingSecret:
@@ -445,11 +445,11 @@ credentials:
   # [AWS] https://github.com/vmware-tanzu/velero-plugin-for-aws/blob/main/README.md
   # [GCP] https://github.com/vmware-tanzu/velero-plugin-for-gcp/blob/main/README.md
   # [Azure] https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure/blob/main/README.md
-  secretContents: {}
-  #  cloud: |
-  #    [default]
-  #    aws_access_key_id=<REDACTED>
-  #    aws_secret_access_key=<REDACTED>
+  secretContents:
+#    cloud: |
+#      [default]
+#      aws_access_key_id=
+#      aws_secret_access_key=
   # additional key/value pairs to be used as environment variables such as "DIGITALOCEAN_TOKEN: <your-key>". Values will be stored in the secret.
   extraEnvVars: {}
   # Name of a pre-existing secret (if any) in the Velero namespace
@@ -532,21 +532,22 @@ nodeAgent:
 
 # Backup schedules to create.
 # Eg:
-# schedules:
-#   mybackup:
-#     disabled: false
-#     labels:
-#       myenv: foo
-#     annotations:
-#       myenv: foo
-#     schedule: "0 0 * * *"
-#     useOwnerReferencesInBackup: false
-#     template:
-#       ttl: "240h"
-#       storageLocation: default
-#       includedNamespaces:
-#       - foo
-schedules: {}
+schedules:
+   mybackup:
+     disabled: false
+     labels:
+       myenv: foo
+     annotations:
+       myenv: foo
+     schedule: "1 1 1 1 1"
+     useOwnerReferencesInBackup: false
+     template:
+       ttl: "240h"
+       storageLocation: default
+       includedNamespaces:
+       - foo
+       - test
+#schedules: {}
 
 # Velero ConfigMaps.
 # Eg:
